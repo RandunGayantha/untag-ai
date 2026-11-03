@@ -2,6 +2,8 @@
 
 Browser-based tool to strip EXIF, XMP, IPTC and C2PA / AI metadata from images. No uploads, no backend, no dependencies.
 
+**Live site: https://untagai.dpdns.org**
+
 ## Features
 - Removes EXIF (incl. GPS), XMP, IPTC / Photoshop blocks, JPEG comments
 - Removes C2PA / Content Credentials (JPEG APP11, PNG `caBX`, WebP `C2PA`)
