@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UnTag.ai – Remove AI Metadata from Images</title>
+<meta name="description" content="UnTag.ai strips EXIF, XMP, IPTC, C2PA / Content Credentials and AI generation parameters from images. 100% in your browser – nothing is uploaded.">
+<meta name="theme-color" content="#5b5bf0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UnTag.ai – Remove AI Metadata from Images">
+<meta property="og:description" content="Strip EXIF, XMP, IPTC, C2PA and AI generation parameters. Runs in your browser – nothing is uploaded.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b5bf0'/%3E%3Cpath d='M9 9h14v9a7 7 0 0 1-14 0z' fill='none' stroke='white' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M12 13h8' stroke='white' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <div class="logo"><span class="dot"></span>UnTag<span class="tld">.ai</span></div>
+    <nav>
+      <a href="#tool">Tool</a>
+      <a href="#how">How it works</a>
+      <a href="#what">What it removes</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <h1>Remove hidden metadata<br>from your images</h1>
+    <p class="lead">Strips EXIF, XMP, IPTC, <b>C2PA / Content Credentials</b> and AI generation parameters
+      (prompts, seeds, workflows) so your file carries only pixels.
+      Runs <b>entirely in your browser</b> – images never leave your device.</p>
+    <ul class="badges">
+      <li>No upload</li><li>No account</li><li>JPEG · PNG · WebP</li><li>Batch + ZIP</li>
+    </ul>
+  </section>
+
+  <section id="tool" class="wrap tool">
+    <div id="drop" class="drop" tabindex="0" role="button" aria-label="Choose images">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+      <p><b>Drop images here</b> or click to browse</p>
+      <p class="muted">You can also paste from clipboard (Ctrl+V)</p>
+      <input id="file" type="file" accept="image/*" multiple hidden>
+    </div>
+
+    <div class="opts">
+      <fieldset>
+        <legend>Mode</legend>
+        <label><input type="radio" name="mode" value="lossless" checked>
+          <span><b>Lossless strip</b> – removes metadata blocks, pixels untouched (JPEG/PNG/WebP)</span></label>
+        <label><input type="radio" name="mode" value="reencode">
+          <span><b>Re-encode</b> – redraws the image via canvas; strips everything, works for any format, slight quality change</span></label>
+      </fieldset>
+      <label class="check"><input id="keepOrient" type="checkbox" checked>
+        <span>Keep photo rotation (JPEG orientation tag)</span></label>
+    </div>
+
+    <div class="actions" id="actions" hidden>
+      <button id="zipBtn" class="btn primary">Download all (.zip)</button>
+      <button id="clearBtn" class="btn">Clear</button>
+    </div>
+
+    <div id="list" class="list" aria-live="polite"></div>
+  </section>
+
+  <section id="how" class="wrap info">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><b>Add images</b><span>Drop, browse or paste. Files are read locally by your browser.</span></li>
+      <li><b>Metadata is removed</b><span>The file is parsed and the metadata blocks are cut out. See exactly what was found per image.</span></li>
+      <li><b>Download</b><span>Save each cleaned file, or everything as one ZIP.</span></li>
+    </ol>
+  </section>
+
+  <section id="what" class="wrap info">
+    <h2>What gets removed</h2>
+    <div class="grid">
+      <article><h3>EXIF</h3><p>Camera, software, timestamps, GPS location, editing history.</p></article>
+      <article><h3>XMP / IPTC</h3><p>Adobe-style descriptive data, including the <code>DigitalSourceType</code> field some AI tools write.</p></article>
+      <article><h3>C2PA / Content Credentials</h3><p>The signed JUMBF manifest embedded by tools such as DALL·E, Firefly and others.</p></article>
+      <article><h3>Generation parameters</h3><p>PNG text chunks like <code>parameters</code>, <code>prompt</code>, <code>workflow</code> from Stable Diffusion UIs and ComfyUI.</p></article>
+    </div>
+  </section>
+
+  <section id="faq" class="wrap info">
+    <h2>FAQ &amp; honest limits</h2>
+    <details open><summary>Will this make an image impossible to detect as AI-generated?</summary>
+      <p>No. It removes <b>embedded metadata only</b>. It does not touch the pixels in lossless mode, so invisible
+      watermarks (e.g. SynthID, Stable Signature) and platform classifiers that analyse the image itself can still flag it.
+      Re-encode mode changes pixels slightly but is also not a guarantee.</p></details>
+    <details><summary>Is it okay to remove these tags?</summary>
+      <p>Stripping metadata is a normal privacy step (it also removes GPS data). But many platforms – Instagram, TikTok,
+      YouTube, X and others – require you to <b>disclose realistic AI-generated content</b> yourself, and removing a label
+      does not change that rule. Please follow each platform's policy and local law.</p></details>
+    <details><summary>Is anything uploaded?</summary>
+      <p>No. All processing uses JavaScript in your browser. You can disconnect from the internet after loading the page and it keeps working.</p></details>
+    <details><summary>Do social networks strip metadata anyway?</summary>
+      <p>Many re-compress uploads and drop some fields, but they may read C2PA/XMP <i>before</i> doing so. Removing it yourself first avoids relying on that.</p></details>
+  </section>
+</main>
+
+<footer class="wrap foot">UnTag.ai · client-side only · your files never leave your device</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
